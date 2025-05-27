@@ -13,6 +13,11 @@ background = ""
 titlescreen = pygame.image.load("Backgrounds/prot_titlesc2.png").convert()
 start = (pygame.image.load("Backgrounds/start_0.png").convert(), pygame.image.load("Backgrounds/start_1.png").convert(), pygame.image.load("Backgrounds/start_2.png").convert(),pygame.image.load("Backgrounds/start_3.png").convert(),pygame.image.load("Backgrounds/start_4.png").convert())
 options = pygame.image.load("Backgrounds/prot_opcje.png").convert()
+def generate_options_rect(pos1, pos2):
+    prostokat = pygame.Surface([200,100])
+    rect = prostokat.get_rect()
+    pygame.draw.rect(screen, "#FFFFFF", rect)
+    #pygame.display.flip()
 def animated_start(napis):
     for i in napis:
         screen.blit(i, (150, 350))
@@ -27,7 +32,6 @@ def generate_background(bkg):
         screen.fill("maroon")
     elif bkg == titlescreen:
         screen.blit(bkg, (0, 0))
-        animated_start(start)
     elif bkg == options:
         screen.blit(bkg, (0, 0))
 class Player(pygame.sprite.Sprite):
@@ -78,8 +82,11 @@ while running:
                     break
             elif event.type == pygame.QUIT:
                 running = 0
-    obj.draw(screen)
+    #obj.draw(screen)
     generate_background(background)
+    generate_options_rect(100, 100)
     pygame.display.flip()
+    if game_state == "main_menu" and background == titlescreen:
+        animated_start(start)
 
 pygame.quit()
