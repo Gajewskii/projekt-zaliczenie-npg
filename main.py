@@ -25,7 +25,7 @@ def generate_options_rect(pos1, pos2, rozmiar, active):
     rect = prostokat.get_rect()
     rect=rect.move(pos1,pos2)
     if active:
-        pygame.draw.rect(screen, "#00FF00", rect, 3)
+        pygame.draw.rect(screen, "#22CD55", rect, 3)
     else:
         pygame.draw.rect(screen, "#FFFFFF", rect, 3)
     #pygame.display.flip()
