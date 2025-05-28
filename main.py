@@ -2,29 +2,32 @@ import pygame
 from pygame import locals
 import time
 
+#inicjalizacja pygame, ekranu, czasu i warunku wyjscia z gry
 pygame.init()
 screen = pygame.display.set_mode((800, 600))
 clock = pygame.time.Clock()
 running = 1
 
+#zmienne i kolekcje dotyczace waznych elementow, potrzebne w wielu miejscach
 game_state = "main_menu"
-#game_mode = 1
-#game_board = 3
-#game_SI_level = 0
-#game_timer = 0
 opcja = ("Tryb","Board","SILVL","Timer")
 numer_opcji = 0
-options_attributes = {"Tryb" : [0,1], "Board" : [0,2], "SILVL" : [0,2], "Timer" : [0,1]}
-options_positions = ([323,160], [323,230], [323,300], [323,370])
+options_attributes = {"Tryb" : [0,1,90], "Board" : [0,2,90], "SILVL" : [0,2,120], "Timer" : [0,1,90]}
+options_positions = ([323,165,[90,60], 1], [323,235,[90,60], 0], [323,305,[120,60], 0], [323,375,[90,60], 0])
 background = ""
+#zaladowanie potrzebnych obrazow
 titlescreen = pygame.image.load("Backgrounds/prot_titlesc2.png").convert()
 start = (pygame.image.load("Backgrounds/start_0.png").convert(), pygame.image.load("Backgrounds/start_1.png").convert(), pygame.image.load("Backgrounds/start_2.png").convert(),pygame.image.load("Backgrounds/start_3.png").convert(),pygame.image.load("Backgrounds/start_4.png").convert())
 options = pygame.image.load("Backgrounds/prot_opcje.png").convert()
-def generate_options_rect(pos1, pos2):
-    prostokat = pygame.Surface([90,65])
+#funkcje
+def generate_options_rect(pos1, pos2, rozmiar, active):
+    prostokat = pygame.Surface(rozmiar)
     rect = prostokat.get_rect()
     rect=rect.move(pos1,pos2)
-    pygame.draw.rect(screen, "#FFFFFF", rect, 3)
+    if active:
+        pygame.draw.rect(screen, "#00FF00", rect, 3)
+    else:
+        pygame.draw.rect(screen, "#FFFFFF", rect, 3)
     #pygame.display.flip()
 def animated_start(napis):
     for i in napis:
@@ -42,6 +45,7 @@ def generate_background(bkg):
         screen.blit(bkg, (0, 0))
     elif bkg == options:
         screen.blit(bkg, (0, 0))
+#prototyp
 class Player(pygame.sprite.Sprite):
    def __init__(self):
        pygame.sprite.Sprite.__init__(self)
@@ -52,6 +56,7 @@ class Player(pygame.sprite.Sprite):
 player: Player = Player()
 obj = pygame.sprite.Group()
 obj.add(player)
+#cialo gry podzielone na sekcje
 while running:
     if game_state == "main_menu":
         background = titlescreen
@@ -82,7 +87,7 @@ while running:
         background = options
         generate_background(background)
         for elem in options_positions:
-            generate_options_rect(elem[0], elem[1])
+            generate_options_rect(elem[0], elem[1], elem[2], elem[3])
         pygame.display.flip()
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
@@ -91,18 +96,28 @@ while running:
                 elif event.key == pygame.K_DOWN:
                     numer_opcji+=1
                     if numer_opcji > 3:
+                        options_positions[numer_opcji - 1][3] = 0
                         numer_opcji = 0
+                        options_positions[numer_opcji][3] = 1
+                        continue
+                    options_positions[numer_opcji][3] = 1
+                    options_positions[numer_opcji - 1][3] = 0
                 elif event.key == pygame.K_UP:
                     numer_opcji -= 1
                     if numer_opcji < 0:
+                        options_positions[numer_opcji + 1][3] = 0
                         numer_opcji = 3
+                        options_positions[numer_opcji][3] = 1
+                        continue
+                    options_positions[numer_opcji][3] = 1
+                    options_positions[numer_opcji + 1][3] = 0
                 elif event.key == pygame.K_SPACE:
                     options_attributes[opcja[numer_opcji]][0] += 1
                     if options_attributes[opcja[numer_opcji]][0] > options_attributes[opcja[numer_opcji]][1]:
                         options_attributes[opcja[numer_opcji]][0] = 0
                         options_positions[numer_opcji][0] = 323
                     else:
-                        options_positions[numer_opcji][0] += 100
+                        options_positions[numer_opcji][0] += options_attributes[opcja[numer_opcji]][2]
 
             elif event.type == pygame.QUIT:
                 running=0
@@ -110,7 +125,6 @@ while running:
                 break
     #obj.draw(screen)
     generate_background(background)
-    #generate_options_rect(100, 100)
     if game_state == "main_menu" and background == titlescreen:
         animated_start(start)
     pygame.display.flip()
