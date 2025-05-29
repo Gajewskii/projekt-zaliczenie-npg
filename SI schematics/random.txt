@@ -1,0 +1,44 @@
+Keep char table NxN
+- is empty
+O is O
+X is X
+
+If Player begin:
+Player turn 1: 	-
+SI turn 1:	From N**2-1 fields choose 1 at random
+		Place X at chosen field
+Player turn 2:	-
+SI turn 2:	From N**2-3 fields choose 1 at random
+		Place X at chosen field
+Player turn 3:	-
+SI turn 3:	Check for Player win
+		From N**2-5 fields choose 1 at random
+		Place X at chosen field
+		Check for SI win
+Player turn k:	-
+SI turn k:	Check for Player win
+		From N**2-(2k-1) fields choose 1 at random
+		Place X at chosen field
+		Check for SI win
+
+If SI begin:
+SI turn 1:	From N**2 fields choose 1 at random
+		Place O at chosen field
+Player turn 1: 	-
+SI turn 2:	From N**2-2 fields choose 1 at random
+		Place O at chosen field
+Player turn 2:	-
+SI turn 3:	From N**2-4 fields choose 1 at random
+		Place O at chosen field
+		Check for SI win
+Player turn 3:	-
+SI turn 4:	Check for Player Win
+		From N**2-6 choose fields 1 at random
+		Place O at chosen field
+		Check for SI win
+Player turn 4:	-
+SI turn k:	Check for Player win
+		From N**2-2(k-1) fields choose 1 at random
+		Place O at chosen field
+		Check for SI win
+Player turn k:	-
