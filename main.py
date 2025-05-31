@@ -8,7 +8,7 @@ screen = pygame.display.set_mode((800, 600))
 clock = pygame.time.Clock()
 running = 1
 
-#zmienne i kolekcje dotyczace waznych elementow, potrzebne w wielu miejscach
+#zmienne i kolekcje dotyczace waznych elementow, potrzebne w wielu miejscach. Nazwy opisuja role
 game_state = "main_menu"
 opcja = ("Tryb","Board","SILVL","Timer")
 numer_opcji = 0
@@ -19,6 +19,7 @@ background = ""
 titlescreen = pygame.image.load("Backgrounds/prot_titlesc2.png").convert()
 start = (pygame.image.load("Backgrounds/start_0.png").convert(), pygame.image.load("Backgrounds/start_1.png").convert(), pygame.image.load("Backgrounds/start_2.png").convert(),pygame.image.load("Backgrounds/start_3.png").convert(),pygame.image.load("Backgrounds/start_4.png").convert())
 options = pygame.image.load("Backgrounds/prot_opcje.png").convert()
+credits_screen = pygame.image.load("Backgrounds/placeholder_credits.png").convert()
 #funkcje
 def generate_options_rect(pos1, pos2, rozmiar, active):
     prostokat = pygame.Surface(rozmiar)
@@ -41,6 +42,8 @@ def generate_background(bkg):
         screen.fill("purple")
     elif bkg == 2:
         screen.fill("maroon")
+    elif bkg == credits_screen:
+        screen.blit(bkg, (0, 0))
     elif bkg == titlescreen:
         screen.blit(bkg, (0, 0))
     elif bkg == options:
@@ -72,6 +75,9 @@ while running:
                 elif event.key == pygame.K_o:
                     game_state = "options"
                     break
+                elif event.key == pygame.K_c:
+                    game_state = "credits"
+                    break
             elif event.type == pygame.QUIT:
                 running=0
                 break
@@ -81,6 +87,16 @@ while running:
                 if event.key == pygame.K_q:
                     running = 0
                     break
+            elif event.type == pygame.QUIT:
+                running = 0
+    while game_state == "credits":
+        background = credits_screen
+        generate_background(background)
+        pygame.display.flip()
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_q:
+                    game_state = "main_menu"
             elif event.type == pygame.QUIT:
                 running = 0
     while game_state == "options":
@@ -118,13 +134,13 @@ while running:
                         options_positions[numer_opcji][0] = 323
                     else:
                         options_positions[numer_opcji][0] += options_attributes[opcja[numer_opcji]][2]
-
             elif event.type == pygame.QUIT:
                 running=0
         if not running:
                 break
     #obj.draw(screen)
     generate_background(background)
+#Animowany napis w menu
     if game_state == "main_menu" and background == titlescreen:
         animated_start(start)
     pygame.display.flip()
