@@ -7,6 +7,8 @@ pygame.init()
 screen = pygame.display.set_mode((800, 600))
 clock = pygame.time.Clock()
 running = 1
+pygame.mixer.init(44100, -16, 2, 1024)
+
 
 #zmienne i kolekcje dotyczace waznych elementow, potrzebne w wielu miejscach. Nazwy opisuja role
 game_state = "main_menu"
@@ -20,7 +22,17 @@ titlescreen = pygame.image.load("Backgrounds/prot_titlesc2.png").convert()
 start = (pygame.image.load("Backgrounds/start_0.png").convert(), pygame.image.load("Backgrounds/start_1.png").convert(), pygame.image.load("Backgrounds/start_2.png").convert(),pygame.image.load("Backgrounds/start_3.png").convert(),pygame.image.load("Backgrounds/start_4.png").convert())
 options = pygame.image.load("Backgrounds/prot_opcje.png").convert()
 credits_screen = pygame.image.load("Backgrounds/placeholder_credits.png").convert()
+#zaladowanie muzyki
+menu_music = pygame.mixer.Sound("Sound/menu_background_music.mp3")
+menu_music.set_volume(0)
 #funkcje
+def play_sounds(muz):
+    if not pygame.mixer.get_busy():
+        pygame.mixer.Sound.play(muz, maxtime=15000, fade_ms=2000)
+        pygame.mixer.Sound.fadeout(muz, 14000)
+        muz.set_volume(0)
+    elif pygame.mixer.Sound.get_volume(menu_music) < 0.3:
+        menu_music.set_volume(pygame.mixer.Sound.get_volume(menu_music)+0.03)
 def generate_options_rect(pos1, pos2, rozmiar, active):
     prostokat = pygame.Surface(rozmiar)
     rect = prostokat.get_rect()
@@ -62,6 +74,7 @@ obj.add(player)
 #cialo gry podzielone na sekcje
 while running:
     if game_state == "main_menu":
+        play_sounds(menu_music)
         background = titlescreen
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
@@ -82,6 +95,7 @@ while running:
                 running=0
                 break
     elif game_state == "playing":
+        #pygame.mixer.Sound.stop(menu_music)
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_q:
@@ -89,7 +103,7 @@ while running:
                     break
             elif event.type == pygame.QUIT:
                 running = 0
-    while game_state == "credits":
+    elif game_state == "credits":
         background = credits_screen
         generate_background(background)
         pygame.display.flip()
@@ -102,6 +116,7 @@ while running:
     while game_state == "options":
         background = options
         generate_background(background)
+        pygame.mixer.Sound.stop(menu_music)
         for elem in options_positions:
             generate_options_rect(elem[0], elem[1], elem[2], elem[3])
         pygame.display.flip()
@@ -143,6 +158,8 @@ while running:
 #Animowany napis w menu
     if game_state == "main_menu" and background == titlescreen:
         animated_start(start)
+    else:
+        pygame.mixer.Sound.stop(menu_music)
     pygame.display.flip()
 
 pygame.quit()
