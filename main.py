@@ -1,6 +1,6 @@
 import pygame
-from pygame import locals
-import time
+import sys
+import random
 
 pygame.init()
 screen = pygame.display.set_mode((800, 600))
