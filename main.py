@@ -63,5 +63,20 @@ def run_game(mode="PvP", size=3):
     def is_board_full():
         return all(cell for row in board for cell in row)
 
+    def ai_move():
+        # Prosty losowy ruch
+        empty = [(r, c) for r in range(size) for c in range(size) if board[r][c] is None]
+        if empty:
+            return random.choice(empty)
+        return None
+
+    while True:
+        draw_board()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
 
    
