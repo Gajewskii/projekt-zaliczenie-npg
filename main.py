@@ -44,4 +44,24 @@ def run_game(mode="PvP", size=3):
 
         pygame.display.flip()
 
+    def check_win():
+        # Wiersze i kolumny
+        for i in range(size):
+            if board[i].count(current_player) == size:
+                return True
+            if all(board[j][i] == current_player for j in range(size)):
+                return True
+
+        # Przekątne
+        if all(board[i][i] == current_player for i in range(size)):
+            return True
+        if all(board[i][size - i - 1] == current_player for i in range(size)):
+            return True
+
+        return False
+
+    def is_board_full():
+        return all(cell for row in board for cell in row)
+
+
    
