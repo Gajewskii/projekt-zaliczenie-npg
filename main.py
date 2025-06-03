@@ -31,8 +31,8 @@ def play_sounds(muz):
         pygame.mixer.Sound.play(muz, maxtime=15000, fade_ms=2000)
         pygame.mixer.Sound.fadeout(muz, 14000)
         muz.set_volume(0)
-    elif pygame.mixer.Sound.get_volume(menu_music) < 0.3:
-        menu_music.set_volume(pygame.mixer.Sound.get_volume(menu_music)+0.03)
+    elif pygame.mixer.Sound.get_volume(muz) < 0.4:
+        muz.set_volume(pygame.mixer.Sound.get_volume(muz)+0.04)
 def generate_options_rect(pos1, pos2, rozmiar, active):
     prostokat = pygame.Surface(rozmiar)
     rect = prostokat.get_rect()
@@ -54,11 +54,7 @@ def generate_background(bkg):
         screen.fill("purple")
     elif bkg == 2:
         screen.fill("maroon")
-    elif bkg == credits_screen:
-        screen.blit(bkg, (0, 0))
-    elif bkg == titlescreen:
-        screen.blit(bkg, (0, 0))
-    elif bkg == options:
+    else:
         screen.blit(bkg, (0, 0))
 #prototyp
 class Player(pygame.sprite.Sprite):
