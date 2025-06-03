@@ -38,3 +38,10 @@ def run_game(mode="PvP", size=3):
                     rect = text.get_rect(center=(col * cell_size + cell_size // 2, row * cell_size + cell_size // 2))
                     screen.blit(text, rect)
 
+        if winner:
+            end_text = FONT.render(f"Wygral: {winner}", True, RED)
+            screen.blit(end_text, end_text.get_rect(center=(SCREEN_SIZE // 2, SCREEN_SIZE // 2)))
+
+        pygame.display.flip()
+
+   
