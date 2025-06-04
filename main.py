@@ -78,5 +78,21 @@ def run_game(mode="PvP", size=3):
                 pygame.quit()
                 sys.exit()
 
+            if not game_over and event.type == pygame.MOUSEBUTTONDOWN:
+                mouseX, mouseY = pygame.mouse.get_pos()
+                clicked_row = mouseY // cell_size
+                clicked_col = mouseX // cell_size
+
+                if board[clicked_row][clicked_col] is None:
+                    if mode == "PvP" or (mode == "PvE" and current_player == "X"):
+                        board[clicked_row][clicked_col] = current_player
+                        if check_win():
+                            game_over = True
+                            winner = current_player
+                        elif is_board_full():
+                            game_over = True
+                            winner = "Remis"
+                        current_player = "O" if current_player == "X" else "X"
+
 
    
