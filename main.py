@@ -92,7 +92,24 @@ def run_game(mode="PvP", size=3):
                         elif is_board_full():
                             game_over = True
                             winner = "Remis"
-                        current_player = "O" if current_player == "X" else "X"
+                        current_player = "O" if current_player == "X" else "X"  
+
+        if mode == "PvE" and current_player == "O" and not game_over:
+            pygame.time.wait(500)
+            move = ai_move()
+            if move:
+                board[move[0]][move[1]] = "O"
+                if check_win():
+                    game_over = True
+                    winner = "O"
+                elif is_board_full():
+                    game_over = True
+                    winner = "Remis"
+                current_player = "X"
+
+            
+
+
 
 
    
