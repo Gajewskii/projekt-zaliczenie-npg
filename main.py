@@ -110,7 +110,7 @@ def run_game(mode="PvP", size=3):
         if game_over:
             draw_board()
             pygame.time.wait(3000)
-    return
+            return
 
 # Menu graficzne wyboru rozmiaru planszy i trybu gry
 def main_menu():
