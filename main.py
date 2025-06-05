@@ -107,6 +107,10 @@ def run_game(mode="PvP", size=3):
                     winner = "Remis"
                 current_player = "X"
 
+        if game_over:
+    pygame.time.wait(2000)
+    return
+
             
 
 
