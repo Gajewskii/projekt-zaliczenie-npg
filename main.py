@@ -155,6 +155,27 @@ def main_menu():
 
         pygame.display.flip()
 
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                x, y = event.pos
+                for label, size, pos in size_buttons:
+                    rect = pygame.Rect(*pos, 200, 60)
+                    if rect.collidepoint(x, y):
+                        run_game(mode=selected_mode, size=size)
+                for label, pos in mode_buttons:
+                    rect = pygame.Rect(*pos, 150, 50)
+                    if rect.collidepoint(x, y):
+                        selected_mode = label
+
+        clock.tick(30)
+
+if __name__ == "__main__":
+    main_menu()
+
+
 
 
             
