@@ -112,6 +112,51 @@ def run_game(mode="PvP", size=3):
             pygame.time.wait(3000)
     return
 
+# Menu graficzne wyboru rozmiaru planszy i trybu gry
+def main_menu():
+    screen = pygame.display.set_mode((SCREEN_SIZE, SCREEN_SIZE))
+    pygame.display.set_caption("Menu")
+    clock = pygame.time.Clock()
+    running = True
+
+    size_buttons = [
+        ("3x3", 3, (200, 150)),
+        ("4x4", 4, (200, 250)),
+        ("5x5", 5, (200, 350)),
+    ]
+
+    mode_buttons = [
+        ("PvP", (100, 450)),
+        ("PvE", (300, 450)),
+    ]
+
+    selected_mode = "PvP"
+
+    while running:
+        screen.fill(WHITE)
+        title = FONT.render("Wybierz rozmiar planszy", True, BLACK)
+        screen.blit(title, (50, 50))
+
+        for label, size, pos in size_buttons:
+            pygame.draw.rect(screen, LINE_COLOR, (*pos, 200, 60), border_radius=10)
+            text = FONT.render(label, True, WHITE)
+            text_rect = text.get_rect(center=(pos[0] + 100, pos[1] + 30))
+            screen.blit(text, text_rect)
+
+        mode_title = FONT.render("Tryb gry:", True, BLACK)
+        screen.blit(mode_title, (50, 400))
+
+        for label, pos in mode_buttons:
+            color = RED if selected_mode == label else LINE_COLOR
+            pygame.draw.rect(screen, color, (*pos, 150, 50), border_radius=10)
+            text = FONT.render(label, True, WHITE)
+            text_rect = text.get_rect(center=(pos[0] + 75, pos[1] + 25))
+            screen.blit(text, text_rect)
+
+        pygame.display.flip()
+
+
+
             
 
 
