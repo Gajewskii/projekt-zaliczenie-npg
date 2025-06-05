@@ -8,6 +8,7 @@ screen = pygame.display.set_mode((800, 600))
 clock = pygame.time.Clock()
 running = 1
 pygame.mixer.init(44100, -16, 2, 1024)
+Czcionka_wynikow = pygame.font.SysFont(None, 50)
 
 
 #zmienne i kolekcje dotyczace waznych elementow, potrzebne w wielu miejscach. Nazwy opisuja role
@@ -17,11 +18,28 @@ numer_opcji = 0
 options_attributes = {"Tryb" : [0,1,90], "Board" : [0,2,90], "SILVL" : [0,2,120], "Timer" : [0,1,90]}
 options_positions = ([323,165,[90,60], 1], [323,235,[90,60], 0], [323,305,[120,60], 0], [323,375,[90,60], 0])
 background = ""
+#obsluga tablicy wynikow
+scores_a = open("score.txt", "a")
+scores_a.close()
+scores_output = open("score.txt", "r")
+wyniki = scores_output.read()
+scores_input = open("score.txt", "w")
+tablica_wynikow = [0,0,0,0,0,0]
+pozycja_wynikow = [(350,240), (350,320), (350,400), (550,240), (550,320), (550,400)]
+licznik_tablicy_wynikow = 0
+pozycja_poprzedniego = 0
+for s in range(0,len(wyniki)):
+    if wyniki[s]=='_':
+        tablica_wynikow[licznik_tablicy_wynikow] = int(wyniki[pozycja_poprzedniego:s])
+        pozycja_poprzedniego = s+1
+        licznik_tablicy_wynikow += 1
+licznik_tablicy_wynikow = 0
 #zaladowanie potrzebnych obrazow
 titlescreen = pygame.image.load("Backgrounds/prot_titlesc2.png").convert()
 start = (pygame.image.load("Backgrounds/start_0.png").convert(), pygame.image.load("Backgrounds/start_1.png").convert(), pygame.image.load("Backgrounds/start_2.png").convert(),pygame.image.load("Backgrounds/start_3.png").convert(),pygame.image.load("Backgrounds/start_4.png").convert())
 options = pygame.image.load("Backgrounds/prot_opcje.png").convert()
 credits_screen = pygame.image.load("Backgrounds/placeholder_credits.png").convert()
+score_screen = pygame.image.load("Backgrounds/scores.png").convert()
 #zaladowanie muzyki
 menu_music = pygame.mixer.Sound("Sound/menu_background_music.mp3")
 menu_music.set_volume(0)
@@ -87,6 +105,9 @@ while running:
                 elif event.key == pygame.K_c:
                     game_state = "credits"
                     break
+                elif event.key == pygame.K_s:
+                    game_state = "score_screen"
+                    break
             elif event.type == pygame.QUIT:
                 running=0
                 break
@@ -109,6 +130,24 @@ while running:
                     game_state = "main_menu"
             elif event.type == pygame.QUIT:
                 running = 0
+    while game_state == "score_screen":
+        background = score_screen
+        generate_background(background)
+        pygame.mixer.Sound.stop(menu_music)
+        for w in tablica_wynikow:
+            temp = Czcionka_wynikow.render(str(w), True, "#FFFFFF")
+            screen.blit(temp, pozycja_wynikow[licznik_tablicy_wynikow])
+            licznik_tablicy_wynikow += 1
+        licznik_tablicy_wynikow = 0
+        pygame.display.flip()
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_q:
+                    game_state = "main_menu"
+            elif event.type == pygame.QUIT:
+                running = 0
+        if not running:
+                break
     while game_state == "options":
         background = options
         generate_background(background)
@@ -157,5 +196,11 @@ while running:
     else:
         pygame.mixer.Sound.stop(menu_music)
     pygame.display.flip()
-
+#przepisanie wynikow z obecnej sesji do pliku
+wynik_str = ""
+for l in tablica_wynikow:
+    wynik_str += str(l) + '_'
+scores_input.write(wynik_str)
+scores_input.close()
+scores_output.close()
 pygame.quit()
