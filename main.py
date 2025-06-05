@@ -18,7 +18,7 @@ FONT = pygame.font.SysFont(None, 60)
 # Funkcja uruchamiająca grę
 def run_game(mode="PvP", size=3):
     screen = pygame.display.set_mode((SCREEN_SIZE, SCREEN_SIZE))
-    pygame.display.set_caption("KóK\xf3łko i Krzyżyk")
+    pygame.display.set_caption("Kółko i Krzyżyk")
     board = [[None for _ in range(size)] for _ in range(size)]
     current_player = "X"
     cell_size = SCREEN_SIZE // size
@@ -47,9 +47,9 @@ def run_game(mode="PvP", size=3):
     def check_win():
         # Wiersze i kolumny
         for i in range(size):
-            if board[i].count(current_player) == size:
+             if all(board[i][j] == current_player for j in range(size)):
                 return True
-            if all(board[j][i] == current_player for j in range(size)):
+             if all(board[j][i] == current_player for j in range(size)):
                 return True
 
         # Przekątne
@@ -108,7 +108,8 @@ def run_game(mode="PvP", size=3):
                 current_player = "X"
 
         if game_over:
-    pygame.time.wait(2000)
+            draw_board()
+            pygame.time.wait(3000)
     return
 
             
