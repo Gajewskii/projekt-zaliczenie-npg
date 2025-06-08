@@ -1,5 +1,0 @@
-Keep char table 4x4
-- is empty
-O is O
-X is X
-

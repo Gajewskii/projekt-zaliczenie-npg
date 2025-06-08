@@ -1,0 +1,46 @@
+keep table NxN
+- 	is EMPTY
+O 	is first_move
+X 	is second_move
+
+function find_best_move(board):
+    best_score = -infinity
+    best_move = null
+
+    for each empty cell in board:
+        board[cell] = SI_MARK
+        score = minmax(board, false)
+        board[cell] = EMPTY
+        if score > best_score:
+            best_score = score
+            best_move = cell
+
+    return best_move
+
+function minmax(board, minmaxing):
+    if check_for_win(SI_MARK):
+        return +10
+    if check_for_win(PLAYER_MARK):
+        return -10
+    if board is full:
+        return 0
+
+    if minmaxing:
+        best_score = -infinity
+        for each empty cell in board:
+            board[cell] = SI_MARK
+            score = minmax(board, false)
+            board[cell] = EMPTY
+            best_score = max(score, best_score)
+        return best_score
+    else:
+        best_score = +infinity
+        for each empty cell in board:
+            board[cell] = PLAYER_MARK
+            score = minmax(board, true)
+            board[cell] = EMPTY
+            best_score = min(score, best_score)
+        return best_score
+
+function check_for_win(mark):
+    return true if there is a winning condition for 'mark'
