@@ -42,5 +42,5 @@ function minmax(board, minmaxing):
             best_score = min(score, best_score)
         return best_score
 
-function check_for_win(mark):
-    return true if there is a winning condition for 'mark'
+function check_for_win(mark, board):
+    return true if there is a winning condition for 'mark' on 'board'

@@ -1,14 +1,35 @@
-With table NxN indexed 1 to n and 1 to n
-Vetical:
-Check If 1,1 & 1,2 & ... & 1,n are the same and not -
-Check If 2,1 & 2,2 & ... & 2,n are the same and not -
-...
-Check If n,1 & n,2 & ... & n,n are the same and not -
-Horizontal:
-Check If 1,1 & 2,1 & ... & n,1 are the same and not -
-Check If 1,2 & 2,2 & ... & n,2 are the same and not -
-...
-Check If 1,n & 2,n & ... & n,n are the same and not -
-Diagonal:
-Check If 1,1 & 2,2 & ... & n,n are the same and not -
-Check If n,1 & n-1,2 & ... & 1,n are the same and not -
+keep table NxN
+- 	is EMPTY
+O 	is first_move
+X 	is second_move
+
+function check_for_win(mark, board):
+    won = 0
+    for x in range(1 to N):
+        check = 0
+        for y in range(1 to N):
+            if board[x,y] = mark:
+	check += 1
+        if check = N:
+            won = 1
+        for y in range(1 to N):
+            check = 0
+            for x in range(1 to N):
+                if board[x,y] = mark:
+	    check += 1
+            if check = N:
+                won = 1
+        for u in range(1 to N):
+            check = 0
+            if board[u,u] = mark:
+	check += 1
+            if check = N:
+                won = 1
+        for u in range(1 to N):
+            check = 0
+            if board[u,N-u+1] = mark:
+	check += 1
+            if check = N:
+                won = 1
+    
+    return won
