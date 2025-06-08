@@ -1,6 +1,7 @@
 import pygame
 from pygame import locals
 import time
+from pvp import run_game
 
 #inicjalizacja pygame, ekranu, czasu i warunku wyjscia z gry
 pygame.init()
@@ -38,11 +39,14 @@ licznik_tablicy_wynikow = 0
 titlescreen = pygame.image.load("Backgrounds/prot_titlesc2.png").convert()
 start = (pygame.image.load("Backgrounds/start_0.png").convert(), pygame.image.load("Backgrounds/start_1.png").convert(), pygame.image.load("Backgrounds/start_2.png").convert(),pygame.image.load("Backgrounds/start_3.png").convert(),pygame.image.load("Backgrounds/start_4.png").convert())
 options = pygame.image.load("Backgrounds/prot_opcje.png").convert()
-credits_screen = pygame.image.load("Backgrounds/placeholder_credits.png").convert()
+credits_screen = pygame.image.load("Backgrounds/credits.png").convert()
 score_screen = pygame.image.load("Backgrounds/scores.png").convert()
+icon_nac = pygame.image.load("Icons/icon_nac.png").convert()
 #zaladowanie muzyki
 menu_music = pygame.mixer.Sound("Sound/menu_background_music.mp3")
 menu_music.set_volume(0)
+pygame.display.set_icon(icon_nac)
+pygame.display.set_caption("Noughts & Crosses")
 #funkcje
 def play_sounds(muz):
     if not pygame.mixer.get_busy():
@@ -112,7 +116,9 @@ while running:
                 running=0
                 break
     elif game_state == "playing":
-        #pygame.mixer.Sound.stop(menu_music)
+        pygame.mixer.Sound.stop(menu_music)
+        tryb_temp = "PvE" if options_attributes["Tryb"][0] else "PvP"
+        run_game(tryb_temp)
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_q:
